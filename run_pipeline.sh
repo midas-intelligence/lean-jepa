@@ -33,9 +33,11 @@ run_seed() {  # launch + wait + retries; resumes from checkpoint when available
         resume_flag="--resume checkpoints/lean_jepa_seed${seed}_best.pt"
       fi
       echo "[pipeline $(date '+%F %T')] launching seed $seed (attempt $attempt) $resume_flag" >> logs/pipeline.log
-      # Cap MPS allocator (default 1.7x is unbounded growth -> wired-memory
+      # Cap MPS allocator (default high=1.7 is unbounded growth -> wired-memory
       # pressure -> GPU command stalls, the hang we hit at epoch 6).
-      PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.7 \
+      # Low watermark must be <= high watermark (default low=1.4 -> crash at 0.7 high).
+      PYTORCH_MPS_HIGH_WATERMARK_RATIO=1.0 \
+      PYTORCH_MPS_LOW_WATERMARK_RATIO=0.8 \
       nohup python3 -u -m lean.train --seed "$seed" --max-epochs 12 $resume_flag >> "logs/seed$seed.txt" 2>&1 &
     fi
     # wait until process exits; kill if hung (log stale >3h)
