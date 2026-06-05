@@ -16,23 +16,42 @@ running() {  # seed -> 0 if a train process for that seed is alive
   pgrep -f "lean.train --seed $1" >/dev/null 2>&1
 }
 
-run_seed() {  # launch + wait + one retry
+stale() {  # seed -> 0 if log untouched for >3h while process "runs" (MPS hang)
+  local f="logs/seed$1.txt"
+  [ -f "$f" ] || return 1
+  local age=$(( $(date +%s) - $(stat -f %m "$f") ))
+  [ "$age" -gt 10800 ]
+}
+
+run_seed() {  # launch + wait + retries; resumes from checkpoint when available
   local seed=$1
-  for attempt in 1 2; do
+  for attempt in 1 2 3; do
     if finished "$seed"; then return 0; fi
     if ! running "$seed"; then
-      echo "[pipeline $(date '+%F %T')] launching seed $seed (attempt $attempt)" >> logs/pipeline.log
-      nohup python3 -u -m lean.train --seed "$seed" --max-epochs 12 > "logs/seed$seed.txt" 2>&1 &
+      local resume_flag=""
+      if [ -f "checkpoints/lean_jepa_seed${seed}_best.pt" ]; then
+        resume_flag="--resume checkpoints/lean_jepa_seed${seed}_best.pt"
+      fi
+      echo "[pipeline $(date '+%F %T')] launching seed $seed (attempt $attempt) $resume_flag" >> logs/pipeline.log
+      nohup python3 -u -m lean.train --seed "$seed" --max-epochs 12 $resume_flag >> "logs/seed$seed.txt" 2>&1 &
     fi
-    # wait until process exits
-    while running "$seed"; do sleep 120; done
+    # wait until process exits; kill if hung (log stale >3h)
+    while running "$seed"; do
+      sleep 120
+      if stale "$seed"; then
+        echo "[pipeline $(date '+%F %T')] seed $seed HUNG (log stale >3h) — killing" >> logs/pipeline.log
+        pkill -f "lean.train --seed $seed"
+        sleep 10
+        break
+      fi
+    done
     if finished "$seed"; then
       echo "[pipeline $(date '+%F %T')] seed $seed FINISHED" >> logs/pipeline.log
       return 0
     fi
     echo "[pipeline $(date '+%F %T')] seed $seed died unfinished" >> logs/pipeline.log
   done
-  echo "[pipeline $(date '+%F %T')] seed $seed FAILED twice — aborting" >> logs/pipeline.log
+  echo "[pipeline $(date '+%F %T')] seed $seed FAILED 3 attempts — aborting" >> logs/pipeline.log
   return 1
 }
 

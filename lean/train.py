@@ -147,10 +147,13 @@ def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None)
 
 
 def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
-          aux_tactic_weight=1.0, value_weight=2.0):
+          aux_tactic_weight=1.0, value_weight=2.0, resume=None):
     """v2 recipe (default): auxiliary tactic-prediction CE on z_before
     (gradients flow into encoder -> tactic-discriminative embeddings, T2)
     and value_weight=2.0 (T3). v1 ablation: aux_tactic_weight=0, value_weight=1.
+
+    resume: path to a *_best.pt checkpoint — restores weights and continues
+    at checkpoint epoch + 1 (optimizer restarts; used for MPS-hang recovery).
     """
     set_seed(seed)
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -160,6 +163,17 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
     value_head = ValueHead(cfg["dim"], cfg["dim"]).to(device)
     aux_head = nn.Linear(cfg["dim"], cfg["num_tactics"]).to(device)
     lam = cfg["sigreg_lambda"]
+
+    start_epoch = 0
+    resume_val = float("inf")
+    if resume:
+        ck = torch.load(resume, map_location="cpu")
+        model.load_state_dict(ck["model"])
+        value_head.load_state_dict(ck["value_head"])
+        aux_head.load_state_dict(ck["aux_head"])
+        start_epoch, resume_val = ck["epoch"] + 1, ck["val"]
+        print(f"RESUMED from {resume}: ckpt epoch {ck['epoch']} "
+              f"(val={resume_val:.4f}) -> continuing at epoch {start_epoch}")
 
     n_model = sum(p.numel() for p in model.parameters())
     n_vh = sum(p.numel() for p in value_head.parameters())
@@ -184,12 +198,20 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
     ckpt_dir.mkdir(exist_ok=True)
     log_dir.mkdir(exist_ok=True)
 
-    best_val, patience_ct = float("inf"), 0
-    best_model, best_vh = None, None
+    best_val, patience_ct = resume_val, 0
+    # Seed best states from the resumed checkpoint so the final
+    # best-model load works even if no later epoch improves.
+    best_model = copy.deepcopy(model.state_dict()) if resume else None
+    best_vh = copy.deepcopy(value_head.state_dict()) if resume else None
+    best_aux = copy.deepcopy(aux_head.state_dict()) if resume else None
     history = []
     t0 = time.time()
 
-    for epoch in range(max_epochs):
+    # Advance LR schedule to the resume point.
+    for _ in range(start_epoch):
+        sched.step()
+
+    for epoch in range(start_epoch, max_epochs):
         te = time.time()
         model.train()
         value_head.train()
@@ -284,6 +306,8 @@ if __name__ == "__main__":
     p.add_argument("--batch-size", type=int, default=48)
     p.add_argument("--aux-weight", type=float, default=1.0)
     p.add_argument("--value-weight", type=float, default=2.0)
+    p.add_argument("--resume", type=str, default=None)
     args = p.parse_args()
     train(args.seed, args.max_epochs, args.batch_size,
-          aux_tactic_weight=args.aux_weight, value_weight=args.value_weight)
+          aux_tactic_weight=args.aux_weight, value_weight=args.value_weight,
+          resume=args.resume)
