@@ -1,0 +1,6 @@
+Embedding splits...
+train (250814, 384)  val (4260, 384)
+baseline majority: top1=0.189 top5=0.558
+linear: top1=0.222 top5=0.592
+mlp: top1=0.233 top5=0.617
+saved /Users/renzobalcazar/Desktop/experiment/lean-jepa/logs/probe_seed42.json

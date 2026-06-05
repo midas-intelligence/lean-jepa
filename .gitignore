@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pt
+*.ckpt
+*.pkl
+*.tar.gz
+data/
+checkpoints/
+nohup.out
+.DS_Store
+wandb/
+logs/
