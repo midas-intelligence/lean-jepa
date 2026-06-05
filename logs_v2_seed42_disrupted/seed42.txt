@@ -1,0 +1,90 @@
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=1.0  value_w=2.0
+train=250,814  val=4,260
+  Epoch   0 | pred=0.3212 sig=4.0212 val_h=64.060 aux=2.976 | lpe=0.2030 ident=0.7106 vMAE=4.18 ptop1=0.231 ptop5=0.616 time=5665s
+  Epoch   1 | pred=0.2213 sig=3.4404 val_h=58.288 aux=2.756 | lpe=0.1897 ident=0.7008 vMAE=4.08 ptop1=0.239 ptop5=0.642 time=5497s
+  Epoch   2 | pred=0.2018 sig=3.2133 val_h=55.016 aux=2.640 | lpe=0.1818 ident=0.6711 vMAE=4.17 ptop1=0.260 ptop5=0.653 time=5520s
+  Epoch   3 | pred=0.1932 sig=3.1185 val_h=52.689 aux=2.546 | lpe=0.1674 ident=0.6520 vMAE=4.19 ptop1=0.272 ptop5=0.676 time=5511s
+  Epoch   4 | pred=0.1885 sig=3.0282 val_h=50.317 aux=2.455 | lpe=0.1717 ident=0.6630 vMAE=4.18 ptop1=0.270 ptop5=0.678 time=5501s
+  Epoch   5 | pred=0.1844 sig=2.9475 val_h=48.203 aux=2.359 | lpe=0.1688 ident=0.6735 vMAE=4.22 ptop1=0.279 ptop5=0.692 time=5558s
+RESUMED from checkpoints/lean_jepa_seed42_best.pt: ckpt epoch 3 (val=0.1674) -> continuing at epoch 4
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=1.0  value_w=2.0
+train=250,814  val=4,260
+/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/optim/lr_scheduler.py:192: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+RESUMED from checkpoints/lean_jepa_seed42_best.pt: ckpt epoch 3 (val=0.1674) -> continuing at epoch 4
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=1.0  value_w=2.0
+train=250,814  val=4,260
+/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/optim/lr_scheduler.py:192: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/renzobalcazar/Desktop/experiment/lean-jepa/lean/train.py", line 311, in <module>
+    train(args.seed, args.max_epochs, args.batch_size,
+  File "/Users/renzobalcazar/Desktop/experiment/lean-jepa/lean/train.py", line 162, in train
+    model, sigreg = model.to(device), sigreg.to(device)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1369, in to
+    return self._apply(convert)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 928, in _apply
+    module._apply(fn)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 928, in _apply
+    module._apply(fn)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 955, in _apply
+    param_applied = fn(param)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1355, in convert
+    return t.to(
+RuntimeError: invalid low watermark ratio 1.4
+RESUMED from checkpoints/lean_jepa_seed42_best.pt: ckpt epoch 3 (val=0.1674) -> continuing at epoch 4
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=1.0  value_w=2.0
+train=250,814  val=4,260
+/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/optim/lr_scheduler.py:192: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/renzobalcazar/Desktop/experiment/lean-jepa/lean/train.py", line 311, in <module>
+    train(args.seed, args.max_epochs, args.batch_size,
+  File "/Users/renzobalcazar/Desktop/experiment/lean-jepa/lean/train.py", line 229, in train
+    za = model.encoder(after).last_hidden_state[:, 0]
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/renzobalcazar/Desktop/experiment/lean-jepa/lean/encoder.py", line 74, in forward
+    x = x + layer["ls2"][0] * layer["ffn"](layer["norm2"](x))
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/nn/modules/activation.py", line 738, in forward
+    return F.gelu(input, approximate=self.approximate)
+RuntimeError: MPS backend out of memory (MPS allocated: 11.09 GiB, other allocations: 96.78 MiB, max allowed: 11.20 GiB). Tried to allocate 72.00 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+RESUMED from checkpoints/lean_jepa_seed42_best.pt: ckpt epoch 3 (val=0.1674) -> continuing at epoch 4
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=1.0  value_w=2.0
+train=250,814  val=4,260
+/Users/renzobalcazar/Library/Python/3.9/lib/python/site-packages/torch/optim/lr_scheduler.py:192: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+  Epoch   4 | pred=0.1886 sig=3.0119 val_h=50.319 aux=2.453 | lpe=0.1841 ident=0.7146 vMAE=4.07 ptop1=0.279 ptop5=0.692 time=5758s
+  Epoch   5 | pred=0.1849 sig=2.9392 val_h=48.330 aux=2.356 | lpe=0.1776 ident=0.6771 vMAE=4.12 ptop1=0.272 ptop5=0.696 time=5628s
+  Epoch   6 | pred=0.1832 sig=2.8612 val_h=46.000 aux=2.243 | lpe=0.1726 ident=0.6732 vMAE=4.09 ptop1=0.280 ptop5=0.691 time=5688s
+  Epoch   7 | pred=0.1837 sig=2.7976 val_h=44.169 aux=2.110 | lpe=0.1702 ident=0.6770 vMAE=4.11 ptop1=0.287 ptop5=0.691 time=5622s
+  Epoch   8 | pred=0.1852 sig=2.7400 val_h=42.714 aux=1.967 | lpe=0.1783 ident=0.6923 vMAE=4.19 ptop1=0.291 ptop5=0.698 time=5612s
+  Early stop at 8
+
+FINAL  lpe=0.1653 vs identity=0.6410
+       ptop1=0.280  ptop5=0.673  value_mae=4.94

@@ -1,0 +1,9 @@
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=1.0  value_w=2.0
+train=250,814  val=4,260
+  Epoch   0 | pred=0.3212 sig=4.0212 val_h=64.060 aux=2.976 | lpe=0.2030 ident=0.7106 vMAE=4.18 ptop1=0.231 ptop5=0.616 time=5665s
+  Epoch   1 | pred=0.2213 sig=3.4404 val_h=58.288 aux=2.756 | lpe=0.1897 ident=0.7008 vMAE=4.08 ptop1=0.239 ptop5=0.642 time=5497s
+  Epoch   2 | pred=0.2018 sig=3.2133 val_h=55.016 aux=2.640 | lpe=0.1818 ident=0.6711 vMAE=4.17 ptop1=0.260 ptop5=0.653 time=5520s
+  Epoch   3 | pred=0.1932 sig=3.1185 val_h=52.689 aux=2.546 | lpe=0.1674 ident=0.6520 vMAE=4.19 ptop1=0.272 ptop5=0.676 time=5511s
+  Epoch   4 | pred=0.1885 sig=3.0282 val_h=50.317 aux=2.455 | lpe=0.1717 ident=0.6630 vMAE=4.18 ptop1=0.270 ptop5=0.678 time=5501s
+  Epoch   5 | pred=0.1844 sig=2.9475 val_h=48.203 aux=2.359 | lpe=0.1688 ident=0.6735 vMAE=4.22 ptop1=0.279 ptop5=0.692 time=5558s
