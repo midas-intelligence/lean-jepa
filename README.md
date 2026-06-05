@@ -17,8 +17,32 @@ validated the architecture on propositional-logic rewriting.
 - Data: LeanDojo Benchmark 4 (Mathlib4) — 250,814 tactic transitions
 - Action space: 64 tactic names = 96.7% of all Mathlib proof steps
 - Model: 34.3M params; trains on one 24 GB MacBook (MPS)
-- Components from [LeWorldModel](https://github.com/lucas-maes/le-wm) (MIT):
-  ARPredictor, SIGReg — see `lewm/ATTRIBUTION.md`
+
+## Provenance: original vs. reused
+
+**Vendored unmodified** (external code, MIT — see `lewm/ATTRIBUTION.md`):
+
+| File | Contents | Source |
+|------|----------|--------|
+| `lewm/jepa.py` | JEPA wrapper class | [LeWorldModel](https://github.com/lucas-maes/le-wm) (Maes et al., 2026) |
+| `lewm/module.py` | ARPredictor (AdaLN-zero), SIGReg, attention blocks | same |
+
+**External data / tools** (not ours):
+- LeanDojo Benchmark 4 dataset (Yang et al., 2023; Zenodo 12740403)
+- `lean-dojo` Python package (Phase-2 proof search interaction)
+
+**Reused from our Phase 1** ([sym-jepa](https://github.com/renz011tzar/sym-jepa), ours):
+- Training-loop recipe (`lean/train.py` skeleton: loss composition, early stopping, eval cadence)
+- ValueHead design and detached-value training
+- Encoder skeleton (`lean/encoder.py`): pre-norm transformer + LayerScale + learned-query pooling — re-targeted from expression trees to token sequences
+
+**Original to this repository**:
+- `lean/data.py` — Lean proof-state tokenizer, benchmark parsing, **tactic-name action-space extraction and coverage analysis** (the 64-actions/96.7% result)
+- `lean/probe.py` — frozen-embedding tactic probing protocol
+- v2 recipe: auxiliary tactic-prediction objective into the encoder
+- The research finding itself: a finite-action latent world model over Lean 4 tactic dynamics (no prior work; see METHODOLOGY §3)
+
+**Borrowed ideas** (standard techniques, cited in METHODOLOGY): JEPA paradigm (LeCun 2022), SIGReg (LeJEPA), AdaLN-zero conditioning (DiT), linear probing, steps-to-proof-completion supervision (LeanProgress).
 
 ## Current results
 
