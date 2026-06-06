@@ -79,7 +79,8 @@ def set_seed(seed):
 
 
 @torch.no_grad()
-def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None):
+def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None,
+             value_log=False):
     """Latent prediction error + tactic top-1/top-5 + value MAE.
 
     Tactic ranking is reported two ways:
@@ -110,7 +111,10 @@ def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None)
 
         pred_errs += (pred - za).pow(2).mean(1).tolist()
         ident_errs += (zb - za).pow(2).mean(1).tolist()
-        val_errs += (value_head(za).squeeze(-1) - steps).abs().tolist()
+        vpred = value_head(za).squeeze(-1)
+        if value_log:
+            vpred = torch.expm1(vpred).clamp(0, 50)
+        val_errs += (vpred - steps).abs().tolist()
 
         B = zb.shape[0]
         gold = action.squeeze(1)
@@ -147,10 +151,18 @@ def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None)
 
 
 def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
-          aux_tactic_weight=1.0, value_weight=2.0, resume=None):
+          aux_tactic_weight=1.0, value_weight=2.0, resume=None,
+          value_log=False, value_into_encoder=False):
     """v2 recipe (default): auxiliary tactic-prediction CE on z_before
     (gradients flow into encoder -> tactic-discriminative embeddings, T2)
     and value_weight=2.0 (T3). v1 ablation: aux_tactic_weight=0, value_weight=1.
+
+    v3 recipe (--value-log --value-into-encoder --aux-weight 2.0): log1p value
+    target and value gradients INTO the encoder. Justified 2026-06-05: refit on
+    frozen v2 embeddings failed T2/T3 criteria (MAE 4.86 > 3.0, ptop5 0.665 <
+    0.70, theorem-disjoint) -> embeddings lack value/policy info; the encoder
+    must learn it in-loop. T1 margin (0.26 vs 0.7) absorbs the interference
+    risk reported by Value-Guided JEPA.
 
     resume: path to a *_best.pt checkpoint — restores weights and continues
     at checkpoint epoch + 1 (optimizer restarts; used for MPS-hang recovery).
@@ -232,7 +244,9 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
 
             pred_loss = (pred - za).pow(2).mean()
             sig_loss = sigreg(torch.cat([zb, za], 0).unsqueeze(0))
-            val_loss = F.mse_loss(value_head(za.detach()).squeeze(-1), steps)
+            val_in = za if value_into_encoder else za.detach()
+            val_tgt = torch.log1p(steps) if value_log else steps
+            val_loss = F.mse_loss(value_head(val_in).squeeze(-1), val_tgt)
             # Auxiliary tactic prediction: gradients flow into encoder
             # to make z_before tactic-discriminative (T2).
             aux_loss = F.cross_entropy(aux_head(zb), action.squeeze(1))
@@ -253,7 +267,7 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
             torch.mps.empty_cache()
 
         metrics = evaluate(model, value_head, val_loader, device, max_batches=40,
-                           aux_head=aux_head)
+                           aux_head=aux_head, value_log=value_log)
         entry = {"epoch": epoch, "pred": float(np.mean(ep["pred"])),
                  "sig": float(np.mean(ep["sig"])), "val_h": float(np.mean(ep["val"])),
                  "aux": float(np.mean(ep["aux"])),
@@ -281,13 +295,21 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
                 print(f"  Early stop at {epoch}")
                 break
 
+        # Always keep the latest weights too (analysis/refit; best-LPE
+        # selection can freeze heads early — measured 2026-06-05).
+        torch.save({"model": model.state_dict(), "value_head": value_head.state_dict(),
+                    "aux_head": aux_head.state_dict(),
+                    "epoch": epoch, "val": metrics["lpe"], "seed": seed},
+                   ckpt_dir / f"lean_jepa_seed{seed}_last.pt")
+
     with open(log_dir / f"lean_jepa_seed{seed}_log.json", "w") as f:
         json.dump(history, f, indent=2)
 
     model.load_state_dict(best_model)
     value_head.load_state_dict(best_vh)
     aux_head.load_state_dict(best_aux)
-    final = evaluate(model, value_head, val_loader, device, aux_head=aux_head)
+    final = evaluate(model, value_head, val_loader, device, aux_head=aux_head,
+                     value_log=value_log)
     final["train_time"] = time.time() - t0
     final["seed"] = seed
     with open(log_dir / f"lean_jepa_seed{seed}_results.json", "w") as f:
@@ -307,7 +329,10 @@ if __name__ == "__main__":
     p.add_argument("--aux-weight", type=float, default=1.0)
     p.add_argument("--value-weight", type=float, default=2.0)
     p.add_argument("--resume", type=str, default=None)
+    p.add_argument("--value-log", action="store_true")
+    p.add_argument("--value-into-encoder", action="store_true")
     args = p.parse_args()
     train(args.seed, args.max_epochs, args.batch_size,
           aux_tactic_weight=args.aux_weight, value_weight=args.value_weight,
-          resume=args.resume)
+          resume=args.resume, value_log=args.value_log,
+          value_into_encoder=args.value_into_encoder)

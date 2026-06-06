@@ -2,6 +2,34 @@
 
 All notable changes to the Lean-JEPA experiments. Newest first.
 
+## v3 recipe — value learning into the encoder (2026-06-05)
+
+**Trigger (pre-registered decision rule).** Post-hoc head refit on frozen v2
+embeddings FAILED its criteria: value MAE 4.86 (log1p target, 60k train
+samples, theorem-disjoint eval; criterion ≤3.0) and policy top-5 0.665
+(criterion ≥0.70). Conclusion: v2 embeddings lack value/policy information —
+an objective limitation, not undertrained heads.
+
+**Correction of an intermediate error.** An earlier quick test reported MAE
+3.37 from frozen embeddings; it split train/test *within* the val set, leaking
+same-theorem states across folds (steps-to-QED is correlated within a
+theorem). The theorem-disjoint refit (4.86) is the honest number. Recorded
+per academic-integrity rules.
+
+**Changes** (`lean/train.py`, flags default OFF = v2 behavior preserved):
+- `--value-log`: in-loop log1p value target, expm1 inverse at eval
+- `--value-into-encoder`: value gradients flow into the encoder (removes
+  detach) — the lever that makes embeddings value-informative. Interference
+  risk (Value-Guided JEPA) accepted: T1 margin is 0.26 vs 0.7 gate.
+- `--aux-weight 2.0` for v3 (T2 push)
+- `*_last.pt` checkpoint saved every epoch alongside best-LPE (best-LPE
+  selection froze heads at epoch 3 in v2 — measured)
+
+**Series replan** (`run_pipeline.sh`): v2 seed 256 cancelled (~32h of a
+known-plateau recipe); seed 137 finishes as the clean v2 ablation row;
+v3 pilot (seed 42) launches automatically after it. Epoch-3 gates on the
+pilot decide the 3-seed v3 series.
+
 ## v2 recipe — auxiliary tactic objective (2026-06-05)
 
 **Motivation.** v1 (dynamics-only) passed T1 decisively (LPE/persistence = 0.21)

@@ -60,9 +60,25 @@ run_seed() {  # launch + wait + retries; resumes from checkpoint when available
   return 1
 }
 
+v3_pilot() {  # v3 recipe pilot (seed 42): refit on frozen v2 embeddings failed
+              # T2/T3 (2026-06-05) -> encoder must learn value/policy info in-loop
+  if grep -q "^FINAL" logs/v3_seed42.txt 2>/dev/null; then return 0; fi
+  if ! pgrep -f "lean.train --seed 42" >/dev/null; then
+    echo "[pipeline $(date '+%F %T')] launching v3 pilot seed 42" >> logs/pipeline.log
+    PYTORCH_MPS_HIGH_WATERMARK_RATIO=1.0 \
+    PYTORCH_MPS_LOW_WATERMARK_RATIO=0.8 \
+    nohup python3 -u -m lean.train --seed 42 --max-epochs 12 \
+      --aux-weight 2.0 --value-log --value-into-encoder \
+      >> logs/v3_seed42.txt 2>&1 &
+  fi
+  while pgrep -f "lean.train --seed 42" >/dev/null; do sleep 120; done
+  grep -q "^FINAL" logs/v3_seed42.txt 2>/dev/null
+}
+
 echo "[pipeline $(date '+%F %T')] pipeline started" >> logs/pipeline.log
-run_seed 42  || exit 1
-run_seed 137 || exit 1
-run_seed 256 || exit 1
-echo "[pipeline $(date '+%F %T')] ALL SEEDS COMPLETE" >> logs/pipeline.log
+run_seed 42  || exit 1   # v2 (already finished; recorded as disrupted)
+run_seed 137 || exit 1   # v2 clean -> ablation row
+# v2 seed 256 cancelled 2026-06-05: refit verdict triggered v3 pivot;
+# 3-seed bar moves to the v3 recipe (this saves ~32h of known-plateau runs).
+v3_pilot && echo "[pipeline $(date '+%F %T')] V3 PILOT COMPLETE" >> logs/pipeline.log
 touch PIPELINE_DONE
