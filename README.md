@@ -8,6 +8,7 @@ tactic text and never reconstructs proof states.
 Phase 2 of a two-phase project; Phase 1 ([sym-jepa](https://github.com/renz011tzar/sym-jepa))
 validated the architecture on propositional-logic rewriting.
 
+**How it proves theorems (start here)**: [PROVING.md](PROVING.md) ·
 **Full methodology**: [METHODOLOGY.md](METHODOLOGY.md) ·
 **Change history**: [CHANGELOG.md](CHANGELOG.md) ·
 **Dependency provenance**: [SECURITY.md](SECURITY.md)
