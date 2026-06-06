@@ -1,0 +1,23 @@
+#!/bin/bash
+# wget shim for LeanDojo on macOS (which ships curl, not wget).
+# Handles the invocation LeanDojo uses: wget <url> -O <out>
+# Skips the download when <out> already exists with the full remote size.
+url="$1"; shift
+out=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -O) out="$2"; shift 2 ;;
+    -q) shift ;;
+    *) shift ;;
+  esac
+done
+[ -z "$out" ] && out=$(basename "$url")
+
+if [ -f "$out" ]; then
+  remote=$(curl -sIL "$url" | awk 'tolower($1)=="content-length:"{cl=$2} END{gsub("\r","",cl); print cl}')
+  local_size=$(stat -f %z "$out" 2>/dev/null || stat -c %s "$out")
+  if [ -n "$remote" ] && [ "$remote" = "$local_size" ]; then
+    exit 0
+  fi
+fi
+exec curl -sL --retry 10 --retry-delay 5 --retry-all-errors -C - -o "$out" "$url"
