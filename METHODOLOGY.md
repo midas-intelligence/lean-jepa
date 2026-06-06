@@ -46,9 +46,9 @@ The contribution: tactic effects predicted in latent space + value-guided select
 
 ## 4. Why this matters for world models
 
-1. **Per-action inference compute.** LLM provers decode tactic text token-by-token; ~1.5B-param ReProver beam search per state. World model: one encoder pass + 64 predictor passes (34M params).
+1. **Per-action inference compute.** LLM provers decode tactic text token-by-token; ReProver (ByT5-small, 299M params) runs beam search per state. World model: one encoder pass + 64 predictor passes (34M params).
 2. **Reusable dynamics.** Policy provers map state→text without modeling tactic effects. World models support planning, lookahead, value bootstrapping (Dreamer; MuZero).
-3. **Hardware.** Whole system (34M params) trains on one 24 GB MacBook.
+3. **Hardware.** Whole system (34M params) trains on a single consumer-grade 24 GB device.
 
 ## 5. Hypotheses and performance targets
 
@@ -59,7 +59,7 @@ The contribution: tactic effects predicted in latent space + value-guided select
 | T3 | Value calibration | MAE ≤ 3.0 steps; ρ ≥ 0.5 | training |
 | T4 | Proof search | pass@1 (LeanDojo random test) | ≥ 10% | Phase 2 |
 
-T1 fails → architecture pivot (token-level objectives). T2–T3 = workshop paper. T4 = main-conference scale: ReProver achieves 51.2% with 229M LLM + retrieval; our model is 6.7× smaller and selects from a fixed vocabulary (10% reframes search efficiency).
+T1 fails → architecture pivot (token-level objectives). T2–T3 = workshop paper. T4 = main-conference scale: ReProver achieves 51.2% with a 299M LLM + retrieval; our model is 8.7× smaller and selects from a fixed vocabulary (10% reframes search efficiency).
 
 ## 6. Data (LeanDojo Benchmark 4, `random` split)
 

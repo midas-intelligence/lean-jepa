@@ -16,7 +16,7 @@ validated the architecture on propositional-logic rewriting.
 
 - Data: LeanDojo Benchmark 4 (Mathlib4) — 250,814 tactic transitions
 - Action space: 64 tactic names = 96.7% of all Mathlib proof steps
-- Model: 34.3M params; trains on one 24 GB MacBook (MPS)
+- Model: 34.3M params; trains on a single consumer-grade 24 GB device
 
 ## Provenance: original vs. reused
 
