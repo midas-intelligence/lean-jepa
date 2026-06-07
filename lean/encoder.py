@@ -71,13 +71,18 @@ class ProofStateEncoder(nn.Module):
 
         for layer in self.layers:
             normed = layer["norm1"](x)
-            attn_out, _ = layer["attn"](normed, normed, normed, key_padding_mask=padding_mask)
+            # need_weights=False enables the fused memory-efficient attention
+            # path; the default (True) materializes B x H x L x L weight
+            # matrices and retains them for backward — OOM at L=512.
+            attn_out, _ = layer["attn"](normed, normed, normed,
+                                        key_padding_mask=padding_mask,
+                                        need_weights=False)
             x = x + layer["ls1"][0] * attn_out
             x = x + layer["ls2"][0] * layer["ffn"](layer["norm2"](x))
 
         cls = self.cls_query.expand(B, -1, -1)
         cls_out, _ = self.cls_attn(
             self.cls_norm(cls), self.output_norm(x), x,
-            key_padding_mask=padding_mask,
+            key_padding_mask=padding_mask, need_weights=False,
         )
         return EncoderOutput(cls_out.squeeze(1))
