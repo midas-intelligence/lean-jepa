@@ -93,16 +93,28 @@ class BucketSampler(torch.utils.data.Sampler):
     allocator then holds ONE shape pool at a time instead of all of them —
     alternating shapes accumulated ~15 GB of cached pools and OOMed."""
 
-    def __init__(self, dataset, batch_size, seed=0):
+    def __init__(self, dataset, batch_size, seed=0, max_tokens=None):
+        # Token-budget batching: B scales inversely with the quantized shape
+        # (a fixed B=32 at L=512 needs >16 GB fwd+bwd with materialized
+        # attention; B=16 at 512 and B=32 at 256 cost roughly the same).
+        max_tokens = max_tokens or batch_size * 256
         lengths = [len(r["before"]) for r in dataset.rows]
         order = sorted(range(len(lengths)), key=lengths.__getitem__)
-        self.batches = [order[i:i + batch_size]
-                        for i in range(0, len(order), batch_size)]
-        self.batches = [b for b in self.batches if len(b) == batch_size]
-        self.shapes = []
-        for b in self.batches:
-            m = max(lengths[i] for i in b)
-            self.shapes.append(min(((m + 63) // 64) * 64, 512))
+        self.batches, self.shapes = [], []
+        i = 0
+        while i < len(order):
+            shape = min(((lengths[order[i]] + 63) // 64) * 64, 512)
+            bsz = max(min(max_tokens // shape, 2 * batch_size), 8)
+            chunk = order[i:i + bsz]
+            # shape of the chunk is set by its longest member
+            m = max(lengths[j] for j in chunk)
+            shape = min(((m + 63) // 64) * 64, 512)
+            bsz = max(min(max_tokens // shape, 2 * batch_size), 8)
+            chunk = order[i:i + bsz]
+            i += len(chunk)
+            if len(chunk) >= 8:
+                self.batches.append(chunk)
+                self.shapes.append(shape)
         self.gen = torch.Generator().manual_seed(seed)
 
     def __iter__(self):
