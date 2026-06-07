@@ -130,7 +130,7 @@ def prove(theorem, ranker=None, method="model", max_nodes=24,
     stats = {"theorem": theorem.full_name, "method": method, "proved": False,
              "nodes": 0, "lean_calls": 0, "wall_s": 0.0, "proof": None}
     try:
-        with Dojo(theorem, hard_timeout=timeout_s) as (dojo, init):
+        with Dojo(theorem, timeout=timeout_s) as (dojo, init):
             frontier = [Node(0.0, init)]
             seen = set()
             ls_budget = ls_per_proof
