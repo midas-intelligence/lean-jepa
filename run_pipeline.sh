@@ -106,10 +106,10 @@ echo "[pipeline $(date '+%F %T')] pipeline started" >> logs/pipeline.log
 run_seed 42  || exit 1   # v2 (already finished; recorded as disrupted)
 run_seed 137 || exit 1   # v2 clean -> ablation row (already finished)
 # v2 seed 256 cancelled 2026-06-05: refit verdict triggered v3 pivot.
-# v3 series approved at ep4 gate 2026-06-06 (ptop5 0.676 >= 0.67).
-# v2 s137 checkpoint archived as checkpoints/v2_seed137_clean.pt before overwrite.
+# v3 series approved at ep4 gate 2026-06-06, then RESEQUENCED 2026-06-07:
+# replication (3 seeds) is deferred until T4 proof-search validates the
+# final recipe — replicating a possibly-superseded recipe wastes ~36h.
+# Order: v3 pilot -> T4 search eval -> (v4 if needed) -> 3-seed replication.
 v3_seed 42  || exit 1    # pilot (running; v3_seed is idempotent — waits for it)
-v3_seed 137 || exit 1
-v3_seed 256 || exit 1
-echo "[pipeline $(date '+%F %T')] V3 SERIES COMPLETE" >> logs/pipeline.log
+echo "[pipeline $(date '+%F %T')] V3 PILOT COMPLETE — T4 gate next (seeds deferred)" >> logs/pipeline.log
 touch PIPELINE_DONE
