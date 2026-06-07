@@ -1,0 +1,18 @@
+LEAN-JEPA  model=33,954,048  value=297,601  aux=24,640  total=34,276,289
+SIGReg lambda=0.09  batch=48  seed=42  aux_w=2.0  value_w=2.0
+train=250,814  val=4,260
+  Epoch   0 | pred=0.3032 sig=4.6502 val_h=0.475 aux=2.913 | lpe=0.2515 ident=0.7909 vMAE=3.70 ptop1=0.237 ptop5=0.631 time=5707s
+  Epoch   1 | pred=0.2365 sig=3.7885 val_h=0.428 aux=2.683 | lpe=0.2142 ident=0.7391 vMAE=3.52 ptop1=0.239 ptop5=0.645 time=5750s
+  Epoch   2 | pred=0.2293 sig=3.4980 val_h=0.400 aux=2.562 | lpe=0.2089 ident=0.7165 vMAE=3.56 ptop1=0.271 ptop5=0.666 time=6030s
+  Epoch   3 | pred=0.2280 sig=3.3474 val_h=0.379 aux=2.449 | lpe=0.2035 ident=0.7081 vMAE=3.58 ptop1=0.270 ptop5=0.667 time=6006s
+  Epoch   4 | pred=0.2290 sig=3.2162 val_h=0.361 aux=2.323 | lpe=0.2088 ident=0.7278 vMAE=3.71 ptop1=0.263 ptop5=0.676 time=6573s
+  Epoch   5 | pred=0.2318 sig=3.1080 val_h=0.345 aux=2.175 | lpe=0.2003 ident=0.7126 vMAE=3.64 ptop1=0.291 ptop5=0.696 time=5856s
+  Epoch   6 | pred=0.2391 sig=2.9952 val_h=0.332 aux=1.991 | lpe=0.2148 ident=0.7412 vMAE=3.65 ptop1=0.280 ptop5=0.681 time=5591s
+  Epoch   7 | pred=0.2480 sig=2.8989 val_h=0.319 aux=1.772 | lpe=0.2181 ident=0.7647 vMAE=3.62 ptop1=0.272 ptop5=0.671 time=5891s
+  Epoch   8 | pred=0.2597 sig=2.7950 val_h=0.309 aux=1.525 | lpe=0.2240 ident=0.7767 vMAE=3.58 ptop1=0.281 ptop5=0.678 time=5661s
+  Epoch   9 | pred=0.2716 sig=2.6992 val_h=0.301 aux=1.276 | lpe=0.2439 ident=0.8134 vMAE=3.60 ptop1=0.286 ptop5=0.669 time=5684s
+  Epoch  10 | pred=0.2823 sig=2.6262 val_h=0.295 aux=1.070 | lpe=0.2629 ident=0.8534 vMAE=3.64 ptop1=0.280 ptop5=0.656 time=5816s
+  Early stop at 10
+
+FINAL  lpe=0.1959 vs identity=0.6901
+       ptop1=0.293  ptop5=0.693  value_mae=4.55
