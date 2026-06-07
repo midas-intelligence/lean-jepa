@@ -28,6 +28,23 @@ CONFIGS = {
         "dropout": 0.1,
         "vocab_size": 8000,
         "num_tactics": 64,
+        "max_len": 256,
+    },
+    # v4: goal-preserving truncation at 512 (fits 99.0% of states; the
+    # 256 head-truncation cut the goal itself on the hardest 8%).
+    "large512": {
+        "dim": 384,
+        "enc_layers": 8,
+        "enc_heads": 8,
+        "pred_depth": 6,
+        "pred_heads": 8,
+        "pred_dim_head": 48,
+        "pred_mlp_dim": 1536,
+        "sigreg_lambda": 0.09,
+        "dropout": 0.1,
+        "vocab_size": 8000,
+        "num_tactics": 64,
+        "max_len": 512,
     },
 }
 
@@ -53,6 +70,7 @@ def build_model(size="large"):
         num_layers=cfg["enc_layers"],
         num_heads=cfg["enc_heads"],
         dropout=cfg["dropout"],
+        max_len=cfg.get("max_len", 256),
     )
 
     predictor = ARPredictor(

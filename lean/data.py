@@ -30,7 +30,8 @@ from typing import Optional
 
 # ── Tokenization ────────────────────────────────────────────────────────────
 
-MAX_STATE_TOKENS = 256
+MAX_STATE_TOKENS = 256          # v1-v3 (head-truncation; cut the goal on long states)
+MAX_STATE_TOKENS_V4 = 512       # v4: goal-preserving truncation; fits 99.0% of states
 PAD, UNK, BOS, EOS = 0, 1, 2, 3
 SPECIAL = ["<pad>", "<unk>", "<bos>", "<eos>"]
 
@@ -56,8 +57,38 @@ def build_vocab(states, max_size: int = 8000) -> dict[str, int]:
 
 
 def encode_state(state: str, vocab: dict[str, int]) -> list[int]:
+    """v1-v3 encoding: head-truncate to 256 and pad. Kept for inference with
+    checkpoints trained on this format. Defect: Lean prints the goal LAST, so
+    head-truncation cuts the goal itself on states > 254 tokens."""
     ids = [BOS] + [vocab.get(t, UNK) for t in tokenize(state)][: MAX_STATE_TOKENS - 2] + [EOS]
     return ids + [PAD] * (MAX_STATE_TOKENS - len(ids))
+
+
+def encode_state_v4(state: str, vocab: dict[str, int],
+                    cap: int = MAX_STATE_TOKENS_V4) -> list[int]:
+    """Goal-preserving encoding, unpadded (dynamic padding happens in collate).
+
+    Lean states are 'hyp_1 ... hyp_n ⊢ goal' — the goal comes last. When a
+    state exceeds the cap, keep the FULL goal segment plus as many of the
+    hypotheses nearest the goal as fit (the most recently introduced, printed
+    last, tend to be the most relevant). Layout: [BOS] hyp_tail goal [EOS].
+    """
+    toks = tokenize(state)
+    budget = cap - 2
+    if len(toks) <= budget:
+        keep = toks
+    else:
+        # Last '⊢' marks the goal of the final/current subgoal.
+        try:
+            gi = len(toks) - 1 - toks[::-1].index("⊢")
+        except ValueError:
+            gi = max(len(toks) - budget, 0)  # no marker: keep the tail
+        goal = toks[gi:]
+        if len(goal) >= budget:
+            keep = goal[:budget]            # giant goal: keep its head
+        else:
+            keep = toks[gi - (budget - len(goal)):gi] + goal
+    return [BOS] + [vocab.get(t, UNK) for t in keep] + [EOS]
 
 
 # ── Tactic action space ─────────────────────────────────────────────────────
@@ -118,8 +149,13 @@ def load_benchmark(data_dir: str, split: str) -> list[Triple]:
     return triples
 
 
-def prepare(data_dir: str, out_dir: str, vocab_size: int = 8000, top_k_tactics: int = 64):
-    """One-time preprocessing: build vocabs, encode all splits, cache."""
+def prepare(data_dir: str, out_dir: str, vocab_size: int = 8000,
+            top_k_tactics: int = 64, v4: bool = False):
+    """One-time preprocessing: build vocabs, encode all splits, cache.
+
+    v4=True: goal-preserving truncation at 512, rows stored UNPADDED
+    (dynamic padding in the collate fn). Vocab identical to v1-v3.
+    """
     os.makedirs(out_dir, exist_ok=True)
 
     train = load_benchmark(data_dir, "train")
@@ -135,11 +171,12 @@ def prepare(data_dir: str, out_dir: str, vocab_size: int = 8000, top_k_tactics: 
     with open(Path(out_dir) / "vocab.pkl", "wb") as f:
         pickle.dump({"state": vocab, "tactic": tactic_vocab}, f)
 
+    enc = (lambda s: encode_state_v4(s, vocab)) if v4 else (lambda s: encode_state(s, vocab))
     for name, triples in [("train", train), ("val", val), ("test", test)]:
         rows = [
             {
-                "before": encode_state(t.state_before, vocab),
-                "after": encode_state(t.state_after, vocab),
+                "before": enc(t.state_before),
+                "after": enc(t.state_after),
                 "action": tactic_vocab.get(tactic_head(t.tactic), 0),
                 "steps_to_qed": min(t.steps_to_qed, 50),
             }
@@ -153,4 +190,5 @@ def prepare(data_dir: str, out_dir: str, vocab_size: int = 8000, top_k_tactics: 
 if __name__ == "__main__":
     import sys
     data_dir = sys.argv[1] if len(sys.argv) > 1 else "data/leandojo_benchmark_4/random"
-    prepare(data_dir, "data/processed")
+    v4 = "--v4" in sys.argv
+    prepare(data_dir, "data/processed_v4" if v4 else "data/processed", v4=v4)

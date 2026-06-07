@@ -192,11 +192,13 @@ def main():
     p.add_argument("--max-nodes", type=int, default=24)
     p.add_argument("--timeout", type=int, default=480)
     p.add_argument("--out", default=None)
+    # val = development/debugging; test = ONLY the final pre-registered eval
+    p.add_argument("--split", choices=["val", "test"], default="val")
     args = p.parse_args()
 
     from lean_dojo import LeanGitRepo, Theorem
 
-    with open(ROOT / "data/leandojo_benchmark_4/random/test.json") as f:
+    with open(ROOT / f"data/leandojo_benchmark_4/random/{args.split}.json") as f:
         meta = json.load(f)
     rng = random.Random(0)
     rng.shuffle(meta)  # fixed shuffle -> same theorem sample for all methods

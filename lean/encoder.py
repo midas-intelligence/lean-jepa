@@ -23,12 +23,14 @@ class EncoderOutput:
 
 
 class ProofStateEncoder(nn.Module):
-    def __init__(self, vocab_size=8000, dim=384, num_layers=8, num_heads=8, dropout=0.1):
+    def __init__(self, vocab_size=8000, dim=384, num_layers=8, num_heads=8,
+                 dropout=0.1, max_len=MAX_STATE_TOKENS):
         super().__init__()
         self.dim = dim
+        self.max_len = max_len
 
         self.tok_emb = nn.Embedding(vocab_size, dim, padding_idx=PAD)
-        self.pos_emb = nn.Embedding(MAX_STATE_TOKENS, dim)
+        self.pos_emb = nn.Embedding(max_len, dim)
         self.input_norm = nn.LayerNorm(dim)
 
         self.layers = nn.ModuleList()
