@@ -85,9 +85,13 @@ def collate_pad(batch):
 
 
 class BucketSampler(torch.utils.data.Sampler):
-    """Length-bucketed batches: sort by state length, batch contiguously,
-    shuffle batch order each epoch. Keeps batches length-homogeneous so
-    dynamic padding pays only for the tokens actually present."""
+    """Length-bucketed batches, iterated shape-contiguously.
+
+    Batches are length-homogeneous (sorted then chunked). Iteration groups
+    batches by their quantized pad shape and runs each group contiguously
+    (group order and within-group order shuffled per epoch): the MPS caching
+    allocator then holds ONE shape pool at a time instead of all of them —
+    alternating shapes accumulated ~15 GB of cached pools and OOMed."""
 
     def __init__(self, dataset, batch_size, seed=0):
         lengths = [len(r["before"]) for r in dataset.rows]
@@ -95,11 +99,21 @@ class BucketSampler(torch.utils.data.Sampler):
         self.batches = [order[i:i + batch_size]
                         for i in range(0, len(order), batch_size)]
         self.batches = [b for b in self.batches if len(b) == batch_size]
+        self.shapes = []
+        for b in self.batches:
+            m = max(lengths[i] for i in b)
+            self.shapes.append(min(((m + 63) // 64) * 64, 512))
         self.gen = torch.Generator().manual_seed(seed)
 
     def __iter__(self):
-        for i in torch.randperm(len(self.batches), generator=self.gen).tolist():
-            yield self.batches[i]
+        groups = {}
+        for bi, s in enumerate(self.shapes):
+            groups.setdefault(s, []).append(bi)
+        keys = list(groups)
+        for k in torch.randperm(len(keys), generator=self.gen).tolist():
+            idxs = groups[keys[k]]
+            for j in torch.randperm(len(idxs), generator=self.gen).tolist():
+                yield self.batches[idxs[j]]
 
     def __len__(self):
         return len(self.batches)
@@ -317,7 +331,7 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
             ep["sig"].append(sig_loss.item())
             ep["val"].append(val_loss.item())
             ep["aux"].append(aux_loss.item())
-            if len(ep["pred"]) % 1000 == 0 and hasattr(torch.mps, "empty_cache"):
+            if len(ep["pred"]) % 300 == 0 and hasattr(torch.mps, "empty_cache"):
                 torch.mps.empty_cache()
 
         sched.step()
