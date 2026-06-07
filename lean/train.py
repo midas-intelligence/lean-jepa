@@ -343,7 +343,7 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
             ep["sig"].append(sig_loss.item())
             ep["val"].append(val_loss.item())
             ep["aux"].append(aux_loss.item())
-            if len(ep["pred"]) % 300 == 0 and hasattr(torch.mps, "empty_cache"):
+            if len(ep["pred"]) % 10 == 0 and hasattr(torch.mps, "empty_cache"):
                 torch.mps.empty_cache()
 
         sched.step()
