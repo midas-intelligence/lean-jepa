@@ -1,0 +1,1944 @@
+{
+  "method": "model",
+  "ckpt": "checkpoints/v3_pilot_seed42.pt",
+  "n": 200,
+  "proved": 60,
+  "pass_rate": 0.3,
+  "results": [
+    {
+      "theorem": "UniformSpaceCat.coe_mk",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 4.057742118835449,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "BoundedContinuousFunction.restrict_apply",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 4.939270973205566,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "ChainClosure.total",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.6621310710906982,
+      "proof": null
+    },
+    {
+      "theorem": "affineSpan_pair_le_of_mem_of_mem",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 13.765252113342285,
+      "proof": null
+    },
+    {
+      "theorem": "GromovHausdorff.candidatesBOfCandidates_mem",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 5,
+      "wall_s": 4.107967138290405,
+      "proof": [
+        "aesop"
+      ]
+    },
+    {
+      "theorem": "FinVec.seq_eq",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 3.5866689682006836,
+      "proof": null
+    },
+    {
+      "theorem": "Multiset.replicate_right_inj",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 9.257406949996948,
+      "proof": null
+    },
+    {
+      "theorem": "Ordering.then_eq_lt",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 1.5444931983947754,
+      "proof": null
+    },
+    {
+      "theorem": "MvPolynomial.totalDegree_le_degrees_card",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.89595103263855,
+      "proof": null
+    },
+    {
+      "theorem": "NNRat.bddBelow_coe",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.8829219341278076,
+      "proof": null
+    },
+    {
+      "theorem": "Commute.zpow_self",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 1.4731760025024414,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "not_infinite_iff_finite",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 1.6758520603179932,
+      "proof": null
+    },
+    {
+      "theorem": "Quiver.Path.toList_chain_nonempty",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.1170241832733154,
+      "proof": null
+    },
+    {
+      "theorem": "MeasureTheory.snorm_sum_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 11.687032699584961,
+      "proof": null
+    },
+    {
+      "theorem": "Polynomial.natDegree_X",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 7.826462030410767,
+      "proof": null
+    },
+    {
+      "theorem": "Finset.forall_mem_cons",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 9.1862051486969,
+      "proof": [
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "Complementeds.coe_inf",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 2.737534284591675,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "MeasureTheory.ae_restrict_biUnion_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 244.89502716064453,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "MultilinearMap.congr_arg",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 7,
+      "wall_s": 5.837692975997925,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "ENNReal.toReal_mul",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.559051036834717,
+      "proof": null
+    },
+    {
+      "theorem": "ENNReal.rpow_neg_one",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 6.7229530811309814,
+      "proof": null
+    },
+    {
+      "theorem": "ContDiff.csin",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.48607087135315,
+      "proof": null
+    },
+    {
+      "theorem": "Ordinal.principal_opow_omega",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.383479118347168,
+      "proof": null
+    },
+    {
+      "theorem": "Ideal.isMaximal_of_isIntegral_of_isMaximal_comap'",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.638074159622192,
+      "proof": null
+    },
+    {
+      "theorem": "Polynomial.natDegree_list_sum_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.5171403884887695,
+      "proof": null
+    },
+    {
+      "theorem": "Sum.Ioo_inr_inr",
+      "method": "model",
+      "proved": true,
+      "nodes": 2,
+      "lean_calls": 10,
+      "wall_s": 2.937397003173828,
+      "proof": [
+        "ext",
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Finset.sum_boole_mul",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 1.6179239749908447,
+      "proof": [
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "geom_sum\u2082_with_one",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 1.7219691276550293,
+      "proof": [
+        "norm_num"
+      ]
+    },
+    {
+      "theorem": "Polynomial.smeval_X_pow",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.311262130737305,
+      "proof": null
+    },
+    {
+      "theorem": "elementalStarAlgebra.continuous_characterSpaceToSpectrum",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 14.196964979171753,
+      "proof": null
+    },
+    {
+      "theorem": "locallyFinite_iff_smallSets",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 4.123098134994507,
+      "proof": null
+    },
+    {
+      "theorem": "CategoryTheory.Pretriangulated.complete_distinguished_triangle_morphism\u2081",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.8339321613311768,
+      "proof": null
+    },
+    {
+      "theorem": "CategoryTheory.types_id",
+      "method": "model",
+      "proved": true,
+      "nodes": 2,
+      "lean_calls": 11,
+      "wall_s": 1.9228179454803467,
+      "proof": [
+        "funext",
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "MeasureTheory.hausdorffMeasure_measurePreserving_piFinTwo",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 11.831166982650757,
+      "proof": null
+    },
+    {
+      "theorem": "Filter.rcomap_sets",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 1.2857449054718018,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Antisymmetrization.ind",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 3.049089193344116,
+      "proof": null
+    },
+    {
+      "theorem": "LieIdeal.comap_bracket_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 15.930758237838745,
+      "proof": null
+    },
+    {
+      "theorem": "FreeGroup.Red.Step.cons_cons_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 5.203965902328491,
+      "proof": null
+    },
+    {
+      "theorem": "LaurentPolynomial.T_mul",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.9530029296875,
+      "proof": null
+    },
+    {
+      "theorem": "EuclideanDomain.gcd_one_left",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.031872034072876,
+      "proof": null
+    },
+    {
+      "theorem": "BundledCorePresheafOfModules.restrictionApp_toPresheafOfModules",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 10.685642957687378,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Profinite.isClosedMap",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 6.108351945877075,
+      "proof": null
+    },
+    {
+      "theorem": "Finsupp.unique_single",
+      "method": "model",
+      "proved": true,
+      "nodes": 2,
+      "lean_calls": 12,
+      "wall_s": 5.258426904678345,
+      "proof": [
+        "ext",
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "NonUnitalStarAlgebra.iInf_toNonUnitalSubalgebra",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 257.99961018562317,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "Finset.coe_div",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 10.56519103050232,
+      "proof": null
+    },
+    {
+      "theorem": "FiberBundleCore.mem_localTriv_target",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 4.449126958847046,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "Ordinal.lift_umax'",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 6,
+      "wall_s": 6.410412073135376,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "String.drop_eq",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.885693073272705,
+      "proof": null
+    },
+    {
+      "theorem": "MeasureTheory.Integrable.withDensity\u1d65_trim_absolutelyContinuous",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.071402072906494,
+      "proof": null
+    },
+    {
+      "theorem": "FractionalIdeal.mul_right_le_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 4,
+      "lean_calls": 32,
+      "wall_s": 40.24134397506714,
+      "proof": null
+    },
+    {
+      "theorem": "HomologicalComplex.kernel_eq_kernel",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.859304189682007,
+      "proof": null
+    },
+    {
+      "theorem": "zero_le_four",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.3447818756103516,
+      "proof": null
+    },
+    {
+      "theorem": "add_tsub_cancel_right",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 3.427196979522705,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "ModuleCat.forget\u2082_map",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 3.225022077560425,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "PrincipalSeg.subrelIso_apply",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.457792043685913,
+      "proof": null
+    },
+    {
+      "theorem": "Module.Finite.of_localizationSpan_finite'",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 8.494937181472778,
+      "proof": null
+    },
+    {
+      "theorem": "ProbabilityTheory.iIndep.iIndepSets",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 7.269096851348877,
+      "proof": null
+    },
+    {
+      "theorem": "EuclideanGeometry.cospherical_of_two_zsmul_oangle_eq_of_not_collinear",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 10.568526268005371,
+      "proof": null
+    },
+    {
+      "theorem": "UniformOnFun.isClosed_setOf_continuous_of_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 7.253618001937866,
+      "proof": null
+    },
+    {
+      "theorem": "Rat.normalize_eq_mkRat",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 1.6974000930786133,
+      "proof": null
+    },
+    {
+      "theorem": "Polynomial.degree_restriction",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.903464317321777,
+      "proof": null
+    },
+    {
+      "theorem": "FreeMonoid.count_of",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.488245964050293,
+      "proof": null
+    },
+    {
+      "theorem": "NNReal.rpow_arith_mean_le_arith_mean_rpow",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 6.597657918930054,
+      "proof": null
+    },
+    {
+      "theorem": "coe_mul_unitBall",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 2.9722750186920166,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "CategoryTheory.CosimplicialObject.\u03b4_comp_\u03c3_of_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 13.271765947341919,
+      "proof": null
+    },
+    {
+      "theorem": "Finset.case_strong_induction_on",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 6.3091490268707275,
+      "proof": null
+    },
+    {
+      "theorem": "Matroid.restrict_eq_self_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 8.41123104095459,
+      "proof": null
+    },
+    {
+      "theorem": "ContinuousLinearMap.star_eq_adjoint",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 16.04480504989624,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "DifferentiableAt.sinh",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 4,
+      "wall_s": 261.70385098457336,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "le_separableClosure_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 13.413081884384155,
+      "proof": null
+    },
+    {
+      "theorem": "ContinuousMap.adjoin_id_eq_span_one_add",
+      "method": "model",
+      "proved": false,
+      "nodes": 3,
+      "lean_calls": 24,
+      "wall_s": 67.8202109336853,
+      "proof": null
+    },
+    {
+      "theorem": "surjective_of_isSwap_of_isPretransitive",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 6.752191066741943,
+      "proof": null
+    },
+    {
+      "theorem": "MvPolynomial.IsHomogeneous.totalDegree_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 12.630563020706177,
+      "proof": null
+    },
+    {
+      "theorem": "Nat.ceil_int",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 4,
+      "wall_s": 14.805264949798584,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Set.sub_mem_Ioc_iff_right",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 8.76721978187561,
+      "proof": null
+    },
+    {
+      "theorem": "NormedField.tendsto_zero_smul_of_tendsto_zero_of_bounded",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 10.065823793411255,
+      "proof": null
+    },
+    {
+      "theorem": "OrderHom.symm_dual_comp",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 3.185518980026245,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Multiset.disjSum_lt_disjSum_of_lt_of_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 4.6452720165252686,
+      "proof": null
+    },
+    {
+      "theorem": "TopologicalSpace.secondCountableTopology_induced",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 6.575814247131348,
+      "proof": null
+    },
+    {
+      "theorem": "Int.bodd_two",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 1.60801100730896,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Int.cast_dvd_cast",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.5149481296539307,
+      "proof": null
+    },
+    {
+      "theorem": "Cycle.prev_next",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 7.835410833358765,
+      "proof": null
+    },
+    {
+      "theorem": "inf_le_right",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 4.169740915298462,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "HahnSeries.SummableFamily.finite_co_support",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 9.502257823944092,
+      "proof": null
+    },
+    {
+      "theorem": "TensorProduct.AlgebraTensorModule.congr_symm",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 16.80740189552307,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Batteries.UnionFind.parent_empty",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 1.4279391765594482,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Besicovitch.card_le_multiplicity",
+      "method": "model",
+      "proved": false,
+      "nodes": 3,
+      "lean_calls": 24,
+      "wall_s": 8.691723108291626,
+      "proof": null
+    },
+    {
+      "theorem": "lowerClosure_empty",
+      "method": "model",
+      "proved": true,
+      "nodes": 2,
+      "lean_calls": 12,
+      "wall_s": 16.796862840652466,
+      "proof": [
+        "ext",
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "WithBot.ofDual_le_iff",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 7.548396110534668,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "mulIndicator_eventuallyLE_mulIndicator",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.236552000045776,
+      "proof": null
+    },
+    {
+      "theorem": "Ideal.Quotient.norm_mk_lt",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 5,
+      "wall_s": 11.243665933609009,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "GaussianInt.abs_natCast_norm",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.569667100906372,
+      "proof": null
+    },
+    {
+      "theorem": "Set.singleton_op_unop",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 6,
+      "wall_s": 1.9030401706695557,
+      "proof": [
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "LinearMap.compl\u2081\u2082_apply",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 19.567129850387573,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "lowerSemicontinuousWithinAt_tsum",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 17.242138862609863,
+      "proof": null
+    },
+    {
+      "theorem": "Submodule.disjoint_iff_comap_eq_bot",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 17.662818908691406,
+      "proof": null
+    },
+    {
+      "theorem": "Subgroup.op_inf",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 1.7449140548706055,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Function.End.one_def",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 3.8630659580230713,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "AffineIsometry.id_toAffineMap",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 5.236306190490723,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Nat.nth_lt_nth_of_lt_card",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 9.84072232246399,
+      "proof": null
+    },
+    {
+      "theorem": "continuousWithinAt_Ioc_iff_Ioi",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 27.038574934005737,
+      "proof": null
+    },
+    {
+      "theorem": "Submonoid.LocalizationMap.mk'_eq_iff_eq'",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 20.931676149368286,
+      "proof": null
+    },
+    {
+      "theorem": "AList.keys_singleton",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 4,
+      "wall_s": 4.248378038406372,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "IntermediateField.adjoin_eq_range_algebraMap_adjoin",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 5,
+      "wall_s": 9.146337032318115,
+      "proof": [
+        "aesop"
+      ]
+    },
+    {
+      "theorem": "Polynomial.prod_multiset_X_sub_C_dvd",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 13.61291217803955,
+      "proof": null
+    },
+    {
+      "theorem": "mul_inv_lt_inv_mul_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 4.931157350540161,
+      "proof": null
+    },
+    {
+      "theorem": "Real.negMulLog_one",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 7.715403079986572,
+      "proof": null
+    },
+    {
+      "theorem": "AEMeasurable.inf_const",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.082870006561279,
+      "proof": null
+    },
+    {
+      "theorem": "AlgEquiv.bijective",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 5.167702913284302,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "String.toList_empty",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 2.36921763420105,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "MeasureTheory.Lp.snorm_lim_le_liminf_snorm",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 36.38710904121399,
+      "proof": null
+    },
+    {
+      "theorem": "Surreal.Multiplication.P24_of_ih",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.668158054351807,
+      "proof": null
+    },
+    {
+      "theorem": "RingHom.coe_coe",
+      "method": "model",
+      "proved": true,
+      "nodes": 2,
+      "lean_calls": 11,
+      "wall_s": 2.925489902496338,
+      "proof": [
+        "ext",
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "NNReal.young_inequality_real",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 12.728580236434937,
+      "proof": null
+    },
+    {
+      "theorem": "IsCoprime.mul_left",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.736318826675415,
+      "proof": null
+    },
+    {
+      "theorem": "List.length_splitWrtComposition",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.936688184738159,
+      "proof": null
+    },
+    {
+      "theorem": "MeasureTheory.GridLines.T_univ",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 10.43999719619751,
+      "proof": null
+    },
+    {
+      "theorem": "MeasureTheory.Measure.quasiMeasurePreserving_smul",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 11.418989896774292,
+      "proof": null
+    },
+    {
+      "theorem": "AddChar.ext",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.9474849700927734,
+      "proof": null
+    },
+    {
+      "theorem": "Subring.mem_map",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 5.120352029800415,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Submonoid.closure_induction\u2082",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 16.1004421710968,
+      "proof": null
+    },
+    {
+      "theorem": "EuclideanGeometry.Sphere.two_zsmul_oangle_eq",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 4,
+      "wall_s": 244.76786708831787,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "Int.not_irrational",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.087862968444824,
+      "proof": [
+        "aesop"
+      ]
+    },
+    {
+      "theorem": "invOf_pos",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.110365867614746,
+      "proof": null
+    },
+    {
+      "theorem": "Matrix.det_fromBlocks_zero\u2081\u2082",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 9.23362112045288,
+      "proof": null
+    },
+    {
+      "theorem": "irrational_iff_ne_rational",
+      "method": "model",
+      "proved": false,
+      "nodes": 4,
+      "lean_calls": 32,
+      "wall_s": 7.238702058792114,
+      "proof": null
+    },
+    {
+      "theorem": "CategoryTheory.exact_comp_hom_inv_comp",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.3437278270721436,
+      "proof": null
+    },
+    {
+      "theorem": "Module.injective_module_of_injective_object",
+      "method": "model",
+      "proved": false,
+      "nodes": 0,
+      "lean_calls": 0,
+      "wall_s": 0.21526885032653809,
+      "proof": null,
+      "error": "DojoInitError: Cannot interact with theorems with the `where` keyword."
+    },
+    {
+      "theorem": "UniformEquicontinuous.closure'",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.644604921340942,
+      "proof": null
+    },
+    {
+      "theorem": "PadicInt.pow_p_dvd_int_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 11.399594068527222,
+      "proof": null
+    },
+    {
+      "theorem": "IsCompact.isCompact_isClosed_basis_nhds",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 10.81716799736023,
+      "proof": null
+    },
+    {
+      "theorem": "CircleDeg1Lift.semiconjBy_iff_semiconj",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 6.0621209144592285,
+      "proof": null
+    },
+    {
+      "theorem": "OrderEmbedding.birkhoffSet_apply",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 5.777981996536255,
+      "proof": null
+    },
+    {
+      "theorem": "elementalStarAlgebra.starAlgHomClass_ext",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.772227048873901,
+      "proof": null
+    },
+    {
+      "theorem": "Ordnode.size_balance'",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 7.2346251010894775,
+      "proof": null
+    },
+    {
+      "theorem": "one_div_lt_one_div_of_neg_of_lt",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 12.849021196365356,
+      "proof": null
+    },
+    {
+      "theorem": "Pi.apply_mulSingle",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.0551979541778564,
+      "proof": null
+    },
+    {
+      "theorem": "Int.natCast_succ_pos",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 1.6028292179107666,
+      "proof": [
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "CancelDenoms.neg_subst",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 1.3498890399932861,
+      "proof": [
+        "simpa"
+      ]
+    },
+    {
+      "theorem": "Cardinal.lift_iSup",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.360427856445312,
+      "proof": null
+    },
+    {
+      "theorem": "CategoryTheory.OplaxFunctor.map\u2082_eqToHom",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 5,
+      "wall_s": 5.037734270095825,
+      "proof": [
+        "aesop"
+      ]
+    },
+    {
+      "theorem": "PiTensorProduct.liftAux_tprod",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 7.065515995025635,
+      "proof": null
+    },
+    {
+      "theorem": "HomologicalComplex.homology\u03b9_singleObjOpcyclesSelfIso_inv",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.998940944671631,
+      "proof": null
+    },
+    {
+      "theorem": "Complex.comap_abs_nhds_zero",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.168950080871582,
+      "proof": null
+    },
+    {
+      "theorem": "MonoidAlgebra.single_commute",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 8.16727614402771,
+      "proof": null
+    },
+    {
+      "theorem": "MeasureTheory.JordanDecomposition.toSignedMeasure_injective",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.929140090942383,
+      "proof": null
+    },
+    {
+      "theorem": "ValuationSubring.coe_mem_principalUnitGroup_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 15.532845735549927,
+      "proof": null
+    },
+    {
+      "theorem": "SchwartzMap.tsum_eq_tsum_fourierIntegral",
+      "method": "model",
+      "proved": false,
+      "nodes": 3,
+      "lean_calls": 24,
+      "wall_s": 13.94867992401123,
+      "proof": null
+    },
+    {
+      "theorem": "Asymptotics.IsTheta.isBigO_symm",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.207303047180176,
+      "proof": null
+    },
+    {
+      "theorem": "Polynomial.natDegree_X_sub_C_le",
+      "method": "model",
+      "proved": true,
+      "nodes": 2,
+      "lean_calls": 11,
+      "wall_s": 12.081955194473267,
+      "proof": [
+        "aesop",
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "Nat.div_pos",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.401800870895386,
+      "proof": null
+    },
+    {
+      "theorem": "ContinuousLinearEquiv.symm_toLinearEquiv",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 24.533245086669922,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Int.eq_zero_of_abs_lt_dvd",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.920905828475952,
+      "proof": null
+    },
+    {
+      "theorem": "CategoryTheory.ShortComplex.LeftHomologyMapData.quasiIso_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 4.384191989898682,
+      "proof": null
+    },
+    {
+      "theorem": "ULift.down_sdiff",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 0.8261308670043945,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Set.iInter_sigma",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 7,
+      "wall_s": 6.5064802169799805,
+      "proof": [
+        "aesop"
+      ]
+    },
+    {
+      "theorem": "MeasureTheory.integrableOn_congr_fun",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 243.974867105484,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "MeasureTheory.tilted_apply_eq_ofReal_integral",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 7.216357231140137,
+      "proof": null
+    },
+    {
+      "theorem": "FirstOrder.Ring.realize_zero",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.8588638305664062,
+      "proof": null
+    },
+    {
+      "theorem": "Matroid.Basis.map",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.090779066085815,
+      "proof": null
+    },
+    {
+      "theorem": "AlgebraicTopology.DoldKan.\u0393\u2082N\u2082ToKaroubiIso_hom_app",
+      "method": "model",
+      "proved": false,
+      "nodes": 3,
+      "lean_calls": 24,
+      "wall_s": 16.546390056610107,
+      "proof": null
+    },
+    {
+      "theorem": "Subring.prod_bot_sup_bot_prod",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 248.4853777885437,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "MulAction.mem_orbit_iff",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 3.7247002124786377,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "SetLike.GradeZero.coe_one",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 2.3859548568725586,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "ContinuousMultilinearMap.uncurryRight_apply",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 7.109033823013306,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "BddBelow.smul_of_nonneg",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.5400230884552,
+      "proof": null
+    },
+    {
+      "theorem": "NumberField.ComplexEmbedding.place_conjugate",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 3,
+      "wall_s": 245.36935806274414,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "ContinuousLinearMap.reApplyInnerSelf_smul",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 34.08201313018799,
+      "proof": null
+    },
+    {
+      "theorem": "Complex.exp_eq_exp_re_mul_sin_add_cos",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 12.530556917190552,
+      "proof": null
+    },
+    {
+      "theorem": "equivShrink_symm_sub",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 5,
+      "wall_s": 2.748453140258789,
+      "proof": [
+        "exact?"
+      ]
+    },
+    {
+      "theorem": "TensorProduct.gradedComm_of_zero_tmul",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 8.662217855453491,
+      "proof": null
+    },
+    {
+      "theorem": "BoundedContinuousFunction.coeFn_toLp",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 27.54369807243347,
+      "proof": null
+    },
+    {
+      "theorem": "CategoryTheory.NatTrans.unop_id",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 3.1664412021636963,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "LinearMap.proj_comp_stdBasis",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.5910818576812744,
+      "proof": null
+    },
+    {
+      "theorem": "Finset.inf_map",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 6.293015003204346,
+      "proof": null
+    },
+    {
+      "theorem": "Set.image_subtype_val_Ioi_Iic",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.593809127807617,
+      "proof": null
+    },
+    {
+      "theorem": "BooleanRing.sup_comm",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.034667730331421,
+      "proof": null
+    },
+    {
+      "theorem": "Finset.val_lt_iff",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 8.625421047210693,
+      "proof": null
+    },
+    {
+      "theorem": "Ideal.Quotient.lift_surjective_of_surjective",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.865666151046753,
+      "proof": null
+    },
+    {
+      "theorem": "Matrix.transpose_invOf",
+      "method": "model",
+      "proved": false,
+      "nodes": 5,
+      "lean_calls": 40,
+      "wall_s": 6.503698110580444,
+      "proof": null
+    },
+    {
+      "theorem": "Multiset.mem_nsmul",
+      "method": "model",
+      "proved": false,
+      "nodes": 3,
+      "lean_calls": 24,
+      "wall_s": 10.050205945968628,
+      "proof": null
+    },
+    {
+      "theorem": "even_bit0",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 2.4016480445861816,
+      "proof": null
+    },
+    {
+      "theorem": "variationOnFromTo.eq_zero_iff_of_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 19.020275115966797,
+      "proof": null
+    },
+    {
+      "theorem": "ProbabilityTheory.cond_inter_self",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 5.1323082447052,
+      "proof": null
+    },
+    {
+      "theorem": "Pi.sup_apply",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 2.880983829498291,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Sum.isLeft_swap",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 1.7236921787261963,
+      "proof": null
+    },
+    {
+      "theorem": "mul_inv_cancel_of_invertible",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 1.5666420459747314,
+      "proof": null
+    },
+    {
+      "theorem": "MeasurableEmbedding.comp",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.223450183868408,
+      "proof": null
+    },
+    {
+      "theorem": "isPiSystem_Ioc_mem",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 3.056410312652588,
+      "proof": null
+    },
+    {
+      "theorem": "DifferentiableOn.sub_const",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 11.016162157058716,
+      "proof": null
+    },
+    {
+      "theorem": "EMetric.closedBall_subset_closedBall",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 6.915776014328003,
+      "proof": null
+    },
+    {
+      "theorem": "NNRat.coe_mk",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 1.2556428909301758,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Profinite.forget_ContinuousMap_mk",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 1.77872633934021,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "ProbabilityTheory.kernel.comap_apply'",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 1,
+      "wall_s": 5.495424032211304,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "Nat.le_nth_of_count_le",
+      "method": "model",
+      "proved": false,
+      "nodes": 1,
+      "lean_calls": 8,
+      "wall_s": 4.494213819503784,
+      "proof": null
+    },
+    {
+      "theorem": "Set.compl_star",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 1.4025249481201172,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "LinearMap.compRight_apply",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 4,
+      "wall_s": 4.3099799156188965,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "IsCyclotomicExtension.iff_singleton",
+      "method": "model",
+      "proved": false,
+      "nodes": 3,
+      "lean_calls": 21,
+      "wall_s": 247.27403116226196,
+      "proof": null,
+      "error": "DojoTacticTimeoutError: "
+    },
+    {
+      "theorem": "CategoryTheory.ofTypeFunctor_map",
+      "method": "model",
+      "proved": true,
+      "nodes": 1,
+      "lean_calls": 2,
+      "wall_s": 3.8343310356140137,
+      "proof": [
+        "rfl"
+      ]
+    },
+    {
+      "theorem": "measurableSet_of_differentiableAt_of_isComplete",
+      "method": "model",
+      "proved": false,
+      "nodes": 2,
+      "lean_calls": 16,
+      "wall_s": 13.397000074386597,
+      "proof": null
+    }
+  ]
+}
