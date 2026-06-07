@@ -58,6 +58,41 @@ class TripleDataset(Dataset):
         }
 
 
+def collate_pad(batch):
+    """Dynamic padding to the batch max (v4 rows are stored unpadded;
+    median state is 92 tokens, so padding to a global 512 would waste ~5x)."""
+    from torch.nn.utils.rnn import pad_sequence
+    return {
+        "before": pad_sequence([b["before"] for b in batch], batch_first=True,
+                               padding_value=0),
+        "after": pad_sequence([b["after"] for b in batch], batch_first=True,
+                              padding_value=0),
+        "action": torch.stack([b["action"] for b in batch]),
+        "steps": torch.stack([b["steps"] for b in batch]),
+    }
+
+
+class BucketSampler(torch.utils.data.Sampler):
+    """Length-bucketed batches: sort by state length, batch contiguously,
+    shuffle batch order each epoch. Keeps batches length-homogeneous so
+    dynamic padding pays only for the tokens actually present."""
+
+    def __init__(self, dataset, batch_size, seed=0):
+        lengths = [len(r["before"]) for r in dataset.rows]
+        order = sorted(range(len(lengths)), key=lengths.__getitem__)
+        self.batches = [order[i:i + batch_size]
+                        for i in range(0, len(order), batch_size)]
+        self.batches = [b for b in self.batches if len(b) == batch_size]
+        self.gen = torch.Generator().manual_seed(seed)
+
+    def __iter__(self):
+        for i in torch.randperm(len(self.batches), generator=self.gen).tolist():
+            yield self.batches[i]
+
+    def __len__(self):
+        return len(self.batches)
+
+
 class ValueHead(nn.Module):
     def __init__(self, dim, hidden):
         super().__init__()
@@ -152,7 +187,8 @@ def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None,
 
 def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
           aux_tactic_weight=1.0, value_weight=2.0, resume=None,
-          value_log=False, value_into_encoder=False):
+          value_log=False, value_into_encoder=False,
+          config="large", data_dir="data/processed", run_tag=""):
     """v2 recipe (default): auxiliary tactic-prediction CE on z_before
     (gradients flow into encoder -> tactic-discriminative embeddings, T2)
     and value_weight=2.0 (T3). v1 ablation: aux_tactic_weight=0, value_weight=1.
@@ -170,11 +206,12 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
     set_seed(seed)
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
-    model, sigreg, cfg = build_model("large")
+    model, sigreg, cfg = build_model(config)
     model, sigreg = model.to(device), sigreg.to(device)
     value_head = ValueHead(cfg["dim"], cfg["dim"]).to(device)
     aux_head = nn.Linear(cfg["dim"], cfg["num_tactics"]).to(device)
     lam = cfg["sigreg_lambda"]
+    tag = run_tag or seed  # artifact suffix: lean_jepa_seed{tag}_*
 
     start_epoch = 0
     resume_val = float("inf")
@@ -196,11 +233,19 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
           f"aux_w={aux_tactic_weight}  value_w={value_weight}")
     assert n_model + n_vh + n_aux <= 50_000_000
 
-    train_loader = DataLoader(TripleDataset(ROOT / "data/processed/train.pkl"),
-                              batch_size=batch_size, shuffle=True, drop_last=True)
-    val_loader = DataLoader(TripleDataset(ROOT / "data/processed/val.pkl"),
-                            batch_size=batch_size, shuffle=False)
-    print(f"train={len(train_loader.dataset):,}  val={len(val_loader.dataset):,}")
+    train_ds = TripleDataset(ROOT / data_dir / "train.pkl")
+    val_ds = TripleDataset(ROOT / data_dir / "val.pkl")
+    if data_dir.endswith("_v4"):
+        # Unpadded rows: length-bucketed batches + dynamic padding.
+        train_loader = DataLoader(train_ds, collate_fn=collate_pad,
+                                  batch_sampler=BucketSampler(train_ds, batch_size, seed))
+        val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False,
+                                collate_fn=collate_pad)
+    else:
+        train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
+                                  drop_last=True)
+        val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
+    print(f"train={len(train_ds):,}  val={len(val_ds):,}  data={data_dir}  config={config}")
 
     params = list(model.parameters()) + list(value_head.parameters()) + list(aux_head.parameters())
     opt = torch.optim.AdamW(params, lr=1e-3, weight_decay=0.01)
@@ -288,7 +333,7 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
             torch.save({"model": best_model, "value_head": best_vh,
                         "aux_head": best_aux,
                         "epoch": epoch, "val": best_val, "seed": seed},
-                       ckpt_dir / f"lean_jepa_seed{seed}_best.pt")
+                       ckpt_dir / f"lean_jepa_seed{tag}_best.pt")
         else:
             patience_ct += 1
             if patience_ct >= patience and epoch >= min_epochs:
@@ -300,9 +345,9 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
         torch.save({"model": model.state_dict(), "value_head": value_head.state_dict(),
                     "aux_head": aux_head.state_dict(),
                     "epoch": epoch, "val": metrics["lpe"], "seed": seed},
-                   ckpt_dir / f"lean_jepa_seed{seed}_last.pt")
+                   ckpt_dir / f"lean_jepa_seed{tag}_last.pt")
 
-    with open(log_dir / f"lean_jepa_seed{seed}_log.json", "w") as f:
+    with open(log_dir / f"lean_jepa_seed{tag}_log.json", "w") as f:
         json.dump(history, f, indent=2)
 
     model.load_state_dict(best_model)
@@ -312,7 +357,7 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
                      value_log=value_log)
     final["train_time"] = time.time() - t0
     final["seed"] = seed
-    with open(log_dir / f"lean_jepa_seed{seed}_results.json", "w") as f:
+    with open(log_dir / f"lean_jepa_seed{tag}_results.json", "w") as f:
         json.dump(final, f, indent=2)
 
     print(f"\nFINAL  lpe={final['lpe']:.4f} vs identity={final['lpe_identity']:.4f}")
@@ -331,8 +376,12 @@ if __name__ == "__main__":
     p.add_argument("--resume", type=str, default=None)
     p.add_argument("--value-log", action="store_true")
     p.add_argument("--value-into-encoder", action="store_true")
+    p.add_argument("--config", default="large")
+    p.add_argument("--data-dir", default="data/processed")
+    p.add_argument("--run-tag", default="")
     args = p.parse_args()
     train(args.seed, args.max_epochs, args.batch_size,
           aux_tactic_weight=args.aux_weight, value_weight=args.value_weight,
           resume=args.resume, value_log=args.value_log,
-          value_into_encoder=args.value_into_encoder)
+          value_into_encoder=args.value_into_encoder,
+          config=args.config, data_dir=args.data_dir, run_tag=args.run_tag)

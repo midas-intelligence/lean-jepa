@@ -1,8 +1,7 @@
 # How Lean-JEPA Proves Theorems
 
 A plain-language explanation of the proving process, the training feedback, the
-current scope, and the road to a fully competitive prover. No Lean experience
-assumed.
+current scope, and the road to a fully competitive prover.
 
 ---
 
