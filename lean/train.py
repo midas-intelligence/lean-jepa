@@ -58,15 +58,27 @@ class TripleDataset(Dataset):
         }
 
 
+def _pad_to(seqs, length):
+    out = torch.zeros(len(seqs), length, dtype=torch.long)
+    for i, s in enumerate(seqs):
+        out[i, : len(s)] = s
+    return out
+
+
 def collate_pad(batch):
-    """Dynamic padding to the batch max (v4 rows are stored unpadded;
-    median state is 92 tokens, so padding to a global 512 would waste ~5x)."""
-    from torch.nn.utils.rnn import pad_sequence
+    """Dynamic padding, quantized to multiples of 64.
+
+    Unquantized per-batch shapes fragment the MPS caching allocator (every
+    distinct length keeps its own cached blocks -> OOM over an epoch).
+    Quantizing to {64,128,...,512} bounds the shape set to 8, so blocks
+    are reused. Median state is 92 tokens, so this still avoids the ~5x
+    waste of padding everything to 512."""
+    m = max(max(len(b["before"]) for b in batch),
+            max(len(b["after"]) for b in batch))
+    length = min(((m + 63) // 64) * 64, 512)
     return {
-        "before": pad_sequence([b["before"] for b in batch], batch_first=True,
-                               padding_value=0),
-        "after": pad_sequence([b["after"] for b in batch], batch_first=True,
-                              padding_value=0),
+        "before": _pad_to([b["before"] for b in batch], length),
+        "after": _pad_to([b["after"] for b in batch], length),
         "action": torch.stack([b["action"] for b in batch]),
         "steps": torch.stack([b["steps"] for b in batch]),
     }
@@ -305,6 +317,8 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
             ep["sig"].append(sig_loss.item())
             ep["val"].append(val_loss.item())
             ep["aux"].append(aux_loss.item())
+            if len(ep["pred"]) % 1000 == 0 and hasattr(torch.mps, "empty_cache"):
+                torch.mps.empty_cache()
 
         sched.step()
 
