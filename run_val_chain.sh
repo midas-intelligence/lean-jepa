@@ -28,13 +28,18 @@ if [ -f logs/search_v3_model_200b.json ] && [ ! -f logs/search_v3_model_200.json
   mv logs/search_v3_model_200b.json logs/search_v3_model_200.json
 fi
 
-for off in 0 200 400 600 800 1000 1200 1400 1600 1800; do
+# PRIORITY: paired three-way on the first 200 (model_0 already done) so we can
+# answer "does the model beat fixed and random?" within ~2h, not ~16h.
+run_batch fixed 0
+run_batch random 0
+# Then the rest of the full-val sweep, all three methods.
+for off in 200 400 600 800 1000 1200 1400 1600 1800; do
   run_batch model "$off"
 done
-for off in 0 200 400 600 800 1000 1200 1400 1600 1800; do
+for off in 200 400 600 800 1000 1200 1400 1600 1800; do
   run_batch fixed "$off"
 done
-for off in 0 200 400 600 800 1000 1200 1400 1600 1800; do
+for off in 200 400 600 800 1000 1200 1400 1600 1800; do
   run_batch random "$off"
 done
 echo "[chain $(date '+%F %T')] ALL DONE" >> logs/val_chain.log

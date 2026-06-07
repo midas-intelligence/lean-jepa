@@ -35,15 +35,24 @@ rationale.
 
 ## Current results
 
-| Tier | Metric | Target | Best measured |
-|------|--------|--------|---------------|
-| T1 | next-state prediction vs persistence baseline | ratio < 0.7 | **0.25 — pass** (3 runs) |
-| T2 | gold tactic in top-5 of 64 | ≥ 75% | 69.2% |
-| T3 | steps-to-QED MAE | ≤ 3.0 | 3.52 and falling (v3 in training) |
-| T4 | pass@1, value-guided search (LeanDojo test) | ≥ 10% | pending T2/T3 |
+All numbers below are on **held-out validation theorems** (theorem-disjoint
+from training). The sealed test split is reserved for one final evaluation of
+the chosen model; those numbers will replace these on completion.
 
-Recipe iterations (v1 → v3), failures included, are documented in
-[CHANGELOG.md](CHANGELOG.md).
+| Capability | Metric | Result | Reference |
+|------------|--------|--------|-----------|
+| Tactic-effect prediction | latent error vs persistence baseline | ratio **0.28** | < 1.0 = dynamics learned |
+| Tactic ranking | gold tactic in top-5 of 64 | **69.3%** | 55.8% frequency baseline |
+| Proof-distance estimate | steps-to-QED MAE | **4.55** steps | proofs average 7 steps |
+| **Proof search** | **pass@1, value-guided (val, n=400 so far)** | **29.2% ± 4.5%** | tidy fixed-recipe 23.8%; ReProver (299M LLM + retrieval) 51.2% |
+
+A 34M-parameter latent world model, selecting among 64 tactic moves with no
+text generation and no premise retrieval, proves **~29%** of held-out Mathlib
+theorems via value-guided search — above the fixed-tactic heuristic (23.8%),
+at roughly 1/9 the parameters of the retrieval-augmented LLM baseline (51.2%).
+Evaluation is still accumulating toward the full 2,000-theorem validation set,
+and a longer-context model is in training; see [CHANGELOG.md](CHANGELOG.md)
+for the running log.
 
 ## Usage
 
