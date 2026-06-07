@@ -69,7 +69,7 @@ class ProofStateEncoder(nn.Module):
 
         padding_mask = token_ids == PAD
 
-        for layer in self.layers:
+        def _block(layer, x):
             normed = layer["norm1"](x)
             # need_weights=False enables the fused memory-efficient attention
             # path; the default (True) materializes B x H x L x L weight
@@ -79,6 +79,18 @@ class ProofStateEncoder(nn.Module):
                                         need_weights=False)
             x = x + layer["ls1"][0] * attn_out
             x = x + layer["ls2"][0] * layer["ffn"](layer["norm2"](x))
+            return x
+
+        for layer in self.layers:
+            if self.training and T > 256:
+                # Gradient checkpointing on long sequences: recompute the
+                # block in backward instead of retaining activations
+                # (~8x activation memory cut; ends MPS cap-chasing at 512).
+                x = torch.utils.checkpoint.checkpoint(
+                    lambda x, layer=layer: _block(layer, x), x,
+                    use_reentrant=False)
+            else:
+                x = _block(layer, x)
 
         cls = self.cls_query.expand(B, -1, -1)
         cls_out, _ = self.cls_attn(
