@@ -60,25 +60,56 @@ run_seed() {  # launch + wait + retries; resumes from checkpoint when available
   return 1
 }
 
-v3_pilot() {  # v3 recipe pilot (seed 42): refit on frozen v2 embeddings failed
-              # T2/T3 (2026-06-05) -> encoder must learn value/policy info in-loop
-  if grep -q "^FINAL" logs/v3_seed42.txt 2>/dev/null; then return 0; fi
-  if ! pgrep -f "lean.train --seed 42" >/dev/null; then
-    echo "[pipeline $(date '+%F %T')] launching v3 pilot seed 42" >> logs/pipeline.log
-    PYTORCH_MPS_HIGH_WATERMARK_RATIO=1.0 \
-    PYTORCH_MPS_LOW_WATERMARK_RATIO=0.8 \
-    nohup python3 -u -m lean.train --seed 42 --max-epochs 12 \
-      --aux-weight 2.0 --value-log --value-into-encoder \
-      >> logs/v3_seed42.txt 2>&1 &
+v3_seed() {  # v3 recipe run (ep4 gate passed 2026-06-06: ptop5 0.676, vMAE ~3.6)
+  local seed=$1
+  local log="logs/v3_seed${seed}.txt"
+  # Prevent recipe mixing: a leftover v2 checkpoint must not be resumed by a
+  # v3 retry. Remove it only if its archive copy verifiably exists.
+  if [ ! -f "$log" ] && [ -f "checkpoints/v2_seed${seed}_clean.pt" ] \
+     && [ -f "checkpoints/lean_jepa_seed${seed}_best.pt" ]; then
+    rm -f "checkpoints/lean_jepa_seed${seed}_best.pt"
+    echo "[pipeline $(date '+%F %T')] removed stale v2 checkpoint for seed $seed (archived as v2_seed${seed}_clean.pt)" >> logs/pipeline.log
   fi
-  while pgrep -f "lean.train --seed 42" >/dev/null; do sleep 120; done
-  grep -q "^FINAL" logs/v3_seed42.txt 2>/dev/null
+  for attempt in 1 2 3; do
+    if grep -q "^FINAL" "$log" 2>/dev/null; then return 0; fi
+    if ! pgrep -f "lean.train --seed $seed" >/dev/null; then
+      local resume_flag=""
+      if [ "$attempt" -gt 1 ] && [ -f "checkpoints/lean_jepa_seed${seed}_best.pt" ]; then
+        resume_flag="--resume checkpoints/lean_jepa_seed${seed}_best.pt"
+      fi
+      echo "[pipeline $(date '+%F %T')] launching v3 seed $seed (attempt $attempt) $resume_flag" >> logs/pipeline.log
+      PYTORCH_MPS_HIGH_WATERMARK_RATIO=1.0 \
+      PYTORCH_MPS_LOW_WATERMARK_RATIO=0.8 \
+      nohup python3 -u -m lean.train --seed "$seed" --max-epochs 12 \
+        --aux-weight 2.0 --value-log --value-into-encoder $resume_flag \
+        >> "$log" 2>&1 &
+    fi
+    while pgrep -f "lean.train --seed $seed" >/dev/null; do
+      sleep 120
+      local age=$(( $(date +%s) - $(stat -f %m "$log") ))
+      if [ "$age" -gt 10800 ]; then
+        echo "[pipeline $(date '+%F %T')] v3 seed $seed HUNG (log stale >3h) — killing" >> logs/pipeline.log
+        pkill -f "lean.train --seed $seed"; sleep 10; break
+      fi
+    done
+    if grep -q "^FINAL" "$log" 2>/dev/null; then
+      echo "[pipeline $(date '+%F %T')] v3 seed $seed FINISHED" >> logs/pipeline.log
+      return 0
+    fi
+    echo "[pipeline $(date '+%F %T')] v3 seed $seed died unfinished" >> logs/pipeline.log
+  done
+  echo "[pipeline $(date '+%F %T')] v3 seed $seed FAILED 3 attempts" >> logs/pipeline.log
+  return 1
 }
 
 echo "[pipeline $(date '+%F %T')] pipeline started" >> logs/pipeline.log
 run_seed 42  || exit 1   # v2 (already finished; recorded as disrupted)
-run_seed 137 || exit 1   # v2 clean -> ablation row
-# v2 seed 256 cancelled 2026-06-05: refit verdict triggered v3 pivot;
-# 3-seed bar moves to the v3 recipe (this saves ~32h of known-plateau runs).
-v3_pilot && echo "[pipeline $(date '+%F %T')] V3 PILOT COMPLETE" >> logs/pipeline.log
+run_seed 137 || exit 1   # v2 clean -> ablation row (already finished)
+# v2 seed 256 cancelled 2026-06-05: refit verdict triggered v3 pivot.
+# v3 series approved at ep4 gate 2026-06-06 (ptop5 0.676 >= 0.67).
+# v2 s137 checkpoint archived as checkpoints/v2_seed137_clean.pt before overwrite.
+v3_seed 42  || exit 1    # pilot (running; v3_seed is idempotent — waits for it)
+v3_seed 137 || exit 1
+v3_seed 256 || exit 1
+echo "[pipeline $(date '+%F %T')] V3 SERIES COMPLETE" >> logs/pipeline.log
 touch PIPELINE_DONE
