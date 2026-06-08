@@ -44,17 +44,23 @@ the chosen model; those numbers will replace these on completion.
 | Tactic-effect prediction | latent error vs persistence baseline | ratio **0.28** | < 1.0 = dynamics learned |
 | Tactic ranking | gold tactic in top-5 of 64 | **69.3%** | 55.8% frequency baseline |
 | Proof-distance estimate | steps-to-QED MAE | **4.55** steps | proofs average 7 steps |
-| **Proof search** | **pass@1, value-guided (val, full 2,000)** | **26.7% ± 1.9%** | fixed-recipe 21.1%; random 17%; ReProver (299M LLM + retrieval) 51.2% |
+**Proof search (value-guided, full 2,000 validation theorems, paired):**
+
+| Method | Pass@1 | 95% CI | vs model |
+|--------|--------|--------|----------|
+| **Model (latent world model)** | **26.7%** | [24.8, 28.6] | — |
+| Fixed-tactic recipe | 21.1% | [19.3, 22.9] | McNemar p = 1.8×10⁻²¹ |
+| Random | 16.3% | [14.7, 17.9] | McNemar p = 1.7×10⁻⁴¹ |
+| *ReProver (299M LLM + retrieval, ref.)* | *51.2%* | — | different paradigm |
 
 A 34M-parameter latent world model, selecting among 64 tactic moves with no
 text generation and no premise retrieval, proves **26.7%** of 2,000 held-out
 Mathlib theorems via value-guided search — **significantly above** a hand-built
-fixed-tactic recipe (21.1%; paired McNemar p = 1.8×10⁻²¹, proving 124 theorems
-the recipe cannot vs 12 the other way) and well above random (17%), over the
-identical move space and search budget. This is at roughly 1/9 the parameters
-of the retrieval-augmented LLM baseline (ReProver, 51.2%) and with no token
-generation. Numbers are on the validation split; the sealed test split is
-reserved for one final evaluation. See [CHANGELOG.md](CHANGELOG.md) for the log.
+fixed-tactic recipe (proving 124 theorems the recipe cannot, vs 12 the other
+way) and far above random, over the identical move space and search budget,
+at ~1/9 the parameters of the retrieval-augmented LLM baseline. Numbers are on
+the validation split; the sealed test split is reserved for one final
+evaluation (in progress). See [CHANGELOG.md](CHANGELOG.md) for the running log.
 
 ## Usage
 
