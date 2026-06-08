@@ -1,0 +1,4 @@
+LEAN-JEPA  model=34,052,352  value=297,601  aux=24,640  total=34,374,593
+SIGReg lambda=0.09  batch=12  seed=42  aux_w=2.0  value_w=2.0
+train=250,814  val=4,260  data=data/processed_v4  config=large512 micro_batch=12 accum=4 eff_batch=48
+  Epoch   0 | pred=0.1719 sig=3.4904 val_h=0.458 aux=2.795 | lpe=0.1386 ident=0.5838 vMAE=3.66 ptop1=0.242 ptop5=0.621 time=19569s
