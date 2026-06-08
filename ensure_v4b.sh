@@ -7,8 +7,8 @@ cd "$(dirname "$0")"
 if grep -q "^FINAL" logs/v4b_seed42.txt 2>/dev/null; then
   echo "v4b already finished"; exit 0
 fi
-if pgrep -f "lean.train.*42v4b" >/dev/null; then
-  echo "v4b already running (PID $(pgrep -f 'lean.train.*42v4b' | tr '\n' ' '))"; exit 0
+if pgrep -f "Python.*lean.train.*42v4b" >/dev/null; then
+  echo "v4b already running (PID $(pgrep -f 'Python.*lean.train.*42v4b' | tr '\n' ' '))"; exit 0
 fi
 PYTORCH_MPS_HIGH_WATERMARK_RATIO=1.0 PYTORCH_MPS_LOW_WATERMARK_RATIO=0.8 \
 nohup python3 -u -m lean.train --seed 42 --max-epochs 12 --batch-size 12 --accum-steps 4 \
