@@ -226,7 +226,7 @@ def evaluate(model, value_head, loader, device, max_batches=None, aux_head=None,
 def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
           aux_tactic_weight=1.0, value_weight=2.0, resume=None,
           value_log=False, value_into_encoder=False,
-          config="large", data_dir="data/processed", run_tag=""):
+          config="large", data_dir="data/processed", run_tag="", accum_steps=1):
     """v2 recipe (default): auxiliary tactic-prediction CE on z_before
     (gradients flow into encoder -> tactic-discriminative embeddings, T2)
     and value_weight=2.0 (T3). v1 ablation: aux_tactic_weight=0, value_weight=1.
@@ -274,16 +274,18 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
     train_ds = TripleDataset(ROOT / data_dir / "train.pkl")
     val_ds = TripleDataset(ROOT / data_dir / "val.pkl")
     if data_dir.endswith("_v4"):
-        # Unpadded rows: length-bucketed batches + dynamic padding.
-        train_loader = DataLoader(train_ds, collate_fn=collate_pad,
-                                  batch_sampler=BucketSampler(train_ds, batch_size, seed))
+        # Clean v4b: SHUFFLED IID batches (correct SGD) + dynamic per-batch
+        # padding. No length-bucketing (that broke IID in the confounded v4).
+        train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
+                                  drop_last=True, collate_fn=collate_pad)
         val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False,
                                 collate_fn=collate_pad)
     else:
         train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
                                   drop_last=True)
         val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
-    print(f"train={len(train_ds):,}  val={len(val_ds):,}  data={data_dir}  config={config}")
+    print(f"train={len(train_ds):,}  val={len(val_ds):,}  data={data_dir}  config={config} "
+          f"micro_batch={batch_size} accum={accum_steps} eff_batch={batch_size*accum_steps}")
 
     params = list(model.parameters()) + list(value_head.parameters()) + list(aux_head.parameters())
     opt = torch.optim.AdamW(params, lr=1e-3, weight_decay=0.01)
@@ -313,8 +315,8 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
         aux_head.train()
         ep = {"pred": [], "sig": [], "val": [], "aux": []}
 
-        for batch in train_loader:
-            opt.zero_grad()
+        opt.zero_grad()
+        for bi, batch in enumerate(train_loader):
             before = batch["before"].to(device)
             after = batch["after"].to(device)
             action = batch["action"].to(device).unsqueeze(1)
@@ -334,16 +336,22 @@ def train(seed=42, max_epochs=20, batch_size=48, patience=5, min_epochs=8,
             # to make z_before tactic-discriminative (T2).
             aux_loss = F.cross_entropy(aux_head(zb), action.squeeze(1))
 
-            (pred_loss + lam * sig_loss + value_weight * val_loss
-             + aux_tactic_weight * aux_loss).backward()
-            torch.nn.utils.clip_grad_norm_(params, 1.0)
-            opt.step()
+            # Gradient accumulation: micro-batch backward scaled by 1/accum,
+            # optimizer step every accum_steps -> effective batch = micro*accum
+            # (matches v3's batch 48 while fitting 512-ctx in memory).
+            loss = (pred_loss + lam * sig_loss + value_weight * val_loss
+                    + aux_tactic_weight * aux_loss) / accum_steps
+            loss.backward()
+            if (bi + 1) % accum_steps == 0:
+                torch.nn.utils.clip_grad_norm_(params, 1.0)
+                opt.step()
+                opt.zero_grad()
 
             ep["pred"].append(pred_loss.item())
             ep["sig"].append(sig_loss.item())
             ep["val"].append(val_loss.item())
             ep["aux"].append(aux_loss.item())
-            if len(ep["pred"]) % 5 == 0 and hasattr(torch.mps, "empty_cache"):
+            if (bi + 1) % 5 == 0 and hasattr(torch.mps, "empty_cache"):
                 torch.mps.empty_cache()
 
         sched.step()
@@ -419,9 +427,11 @@ if __name__ == "__main__":
     p.add_argument("--config", default="large")
     p.add_argument("--data-dir", default="data/processed")
     p.add_argument("--run-tag", default="")
+    p.add_argument("--accum-steps", type=int, default=1)
     args = p.parse_args()
     train(args.seed, args.max_epochs, args.batch_size,
           aux_tactic_weight=args.aux_weight, value_weight=args.value_weight,
           resume=args.resume, value_log=args.value_log,
           value_into_encoder=args.value_into_encoder,
-          config=args.config, data_dir=args.data_dir, run_tag=args.run_tag)
+          config=args.config, data_dir=args.data_dir, run_tag=args.run_tag,
+          accum_steps=args.accum_steps)
